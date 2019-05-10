@@ -45,7 +45,11 @@ INSERT INTO dashboard (url, content)
 SELECT * FROM dashboard;
 ```
 
-Install all dependencies
+### Set up and Running
+
+1. Set up Postgres Instance
+
+2. Install all dependencies
 
 ```
 npm install
