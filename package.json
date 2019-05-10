@@ -5,7 +5,9 @@
   "main": "entry.js",
   "dependencies": {
     "express": "^4.16.4",
-    "opener": "^1.5.1"
+    "opener": "^1.5.1",
+    "pg": "^7.10.0",
+    "pgbouncer": "^1.0.1"
   },
   "devDependencies": {
     "chai": "^4.2.0",
