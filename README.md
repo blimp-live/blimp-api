@@ -1,5 +1,6 @@
-# blimp
-Blimp
+# blimp API
+
+Blimp API/Backend
 
 ## Getting Started and Tests
 
