@@ -1,5 +1,8 @@
 # blimp API
 
+node Version: v10.15.3
+npm Verison: v6.4.1
+
 Blimp API/Backend
 
 ## Getting Started and Tests
@@ -8,6 +11,7 @@ Blimp API/Backend
 
 ```
 brew install postgresql
+brew
 psql postgres
 ```
 
