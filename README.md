@@ -28,16 +28,7 @@ psql -d postgres -U me
 
 3. Create DB and insert some fake data:
 ```
-postgres=> CREATE DATABASE blimp;
-postgres=> \c blimp
-blimp=>
-CREATE TABLE dashboard (
-  ID SERIAL PRIMARY KEY,
-  url VARCHAR(30),
-  content VARCHAR(30)
-);
-INSERT INTO dashboard (url, content)
-  VALUES ('bar', 'I am dashboard bar'), ('foo', 'I am dashboard foo');
+\i setup_data.sql
 ```
 
 4. Confirm creation of data:
