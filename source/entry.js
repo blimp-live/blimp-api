@@ -11,6 +11,8 @@ app.get('/login', function(req, res) {
   res.send('Login Page')
 })
 
+app.get('/dashboard', pg.getDashboards)
+
 app.get('/dashboard/id/:id', pg.getDashboardById)
 
 app.get('/dashboard/url/:url', pg.getDashboardByUrl)

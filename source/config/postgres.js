@@ -23,12 +23,21 @@ const getDashboardByUrl = (request, response) => {
 
 }
 
+const getDashboards = (request, response) => {
+  pool.query('SELECT * FROM pg_catalog.pg_tables;', (error, results) => {
+    if (error) {
+      throw error
+    }
+    response.status(200).json(results.rows)
+  })
+}
+
 const getDashboardById = (request, response) => {
   const id = parseInt(request.params.id)
 
   pool.query('SELECT * FROM dashboard WHERE id = $1', [id], (error, results) => {
     if (error) {
-      throw error
+      console.log(error);
     }
     response.status(200).json(results.rows)
   })
@@ -37,4 +46,5 @@ const getDashboardById = (request, response) => {
 module.exports = {
   getDashboardById,
   getDashboardByUrl,
+  getDashboards,
 }

@@ -27,7 +27,11 @@ psql -d postgres -U me
 ```
 
 3. Create DB and insert some fake data:
+
 ```
+\i refresh_data.sql
+CREATE DATABASE blimp;
+\c blimp
 \i setup_data.sql
 ```
 
