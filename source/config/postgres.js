@@ -11,6 +11,8 @@ const pool = new Pool({
   port: 5432,
 })
 
+const moment = require('moment');
+
 const getDashboardByUrl = (request, response) => {
   const url = request.params.url
   console.log(url)
@@ -43,8 +45,22 @@ const getDashboardById = (request, response) => {
   })
 }
 
+const createDashboard = (request, response) => {
+  const { name, userid } = request.body
+  url = name.replace(/\s+/g, '-').toLowerCase();
+ 
+  pool.query('INSERT INTO dashboard (url, name, contents, public, last_saved, created_at) VALUES ($1, $2, $3, $4, $5, $6)', 
+    [url, name, '{}', true, moment(Date.now()), moment(Date.now())], (error, result) => {
+    if (error) {
+      throw error
+    }
+    response.status(200).json(result.rows)
+  })
+}
+
 module.exports = {
   getDashboardById,
   getDashboardByUrl,
   getDashboards,
+  createDashboard,
 }
