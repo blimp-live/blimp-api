@@ -28,8 +28,11 @@ app.get('/dashboard/url/:url', pg.getDashboardByUrl)
 //curl --data "name=Riley's Dashboard" --data userid=1 http://localhost:8000/dashboard
 app.post('/dashboard', pg.createDashboard)
 
+// curl -X "DELETE" --data userid=1 http://localhost:8000/dashboard/id/0
+app.delete('/dashboard/id/:id', pg.deleteDashboard)
 
-
+// curl --data "email=rgowanlock@gmail.com&name=Riley&password=" http://localhost:8000/user
+app.post('/user', pg.createUser)
 
 app.listen(port, () => console.log(`Blimp app listening on port ${port}!`))
 

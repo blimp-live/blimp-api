@@ -34,27 +34,56 @@ const getDashboards = (request, response) => {
   })
 }
 
+// get dashboard information given dashboard id
 const getDashboardById = (request, response) => {
-  const id = parseInt(request.params.id)
+  const id = parseInt(request.params.id);
 
   pool.query('SELECT * FROM dashboard WHERE id = $1', [id], (error, results) => {
-    if (error) {
-      console.log(error);
-    }
-    response.status(200).json(results.rows)
+    if (error) throw error;
+    response.status(200).json(results.rows);
   })
 }
 
+// create dashboard, update permissions table
 const createDashboard = (request, response) => {
-  const { name, userid } = request.body
+  const { name, userid } = request.body;
   url = name.replace(/\s+/g, '-').toLowerCase();
  
-  pool.query('INSERT INTO dashboard (url, name, contents, public, last_saved, created_at) VALUES ($1, $2, $3, $4, $5, $6)', 
-    [url, name, '{}', true, moment(Date.now()), moment(Date.now())], (error, result) => {
-    if (error) {
-      throw error
-    }
-    response.status(200).json(result.rows)
+  pool.query('INSERT INTO dashboard (url, name, contents, public, last_saved, created_at) VALUES ($1, $2, $3, $4, $5, $6) RETURNING *', 
+    [url, name, '{}', true, moment(Date.now()), moment(Date.now())], (error, results) => {
+      if (error) throw error;
+      dashboardid = results.rows[0].id;
+
+      pool.query('INSERT INTO permissions (user_id, dashboard_id, role) VALUES ($1, $2, $3)', 
+        [userid, dashboardid, 'owner'], (error, results) => {
+          if (error) throw error;
+      })
+      response.status(200).json(results.rows);
+  })
+}
+
+//delete dashboard, update permissions table
+const deleteDashboard = (request, response) => {
+  const dashboardid = parseInt(request.params.id)
+  const {userid} = request.body
+
+  pool.query('DELETE FROM dashboard WHERE id = $1', [dashboardid], (error, results) => {
+    if (error) throw error;
+    pool.query('DELETE FROM permissions WHERE dashboard_id = $1', [dashboardid], (error, results) => {
+      if (error) throw error;
+    })
+    response.status(200).json(results.rows);
+  })
+}
+
+//create user
+const createUser = (request, response) => {
+  const {email, name, password} = request.body
+ 
+  pool.query('INSERT INTO users (email, img_url, name, password) VALUES ($1, $2, $3, $4) RETURNING *', 
+    [email, '', name, password], (error, results) => {
+      if (error) throw error;
+      response.status(200).json(results.rows);
   })
 }
 
@@ -63,4 +92,6 @@ module.exports = {
   getDashboardByUrl,
   getDashboards,
   createDashboard,
+  deleteDashboard,
+  createUser,
 }
