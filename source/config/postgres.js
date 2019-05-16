@@ -15,21 +15,16 @@ const moment = require('moment');
 
 const getDashboardByUrl = (request, response) => {
   const url = request.params.url
-  console.log(url)
+
   pool.query('SELECT * FROM dashboard WHERE url = $1', [url], (error, results) => {
-    if (error) {
-      throw error
-    }
+    if (error) throw error;
     response.status(200).json(results.rows)
   })
-
 }
 
 const getDashboards = (request, response) => {
   pool.query('SELECT * FROM pg_catalog.pg_tables;', (error, results) => {
-    if (error) {
-      throw error
-    }
+    if (error) throw error;
     response.status(200).json(results.rows)
   })
 }
@@ -87,6 +82,33 @@ const createUser = (request, response) => {
   })
 }
 
+//delete user
+const deleteUser = (request, response) => {
+  const {userid} = request.body
+
+  pool.query('DELETE FROM users WHERE id = $1', [userid], (error, results) => {
+    if (error) throw error;
+    pool.query('DELETE FROM permissions WHERE user_id = $1', [userid], (error, results) => {
+      if (error) throw error;
+    })
+    response.status(200).json(results.rows);
+  })
+}
+
+// get user
+const getUser = (request, response) => {
+  const id = parseInt(request.params.id);
+
+  pool.query('SELECT * FROM users WHERE id = $1', [id], (error, results) => {
+    if (error) throw error;
+    response.status(200).json(results.rows);
+  })
+}
+
+// change user role
+const updateUserRole = (request, response) => {}
+
+
 module.exports = {
   getDashboardById,
   getDashboardByUrl,
@@ -94,4 +116,7 @@ module.exports = {
   createDashboard,
   deleteDashboard,
   createUser,
+  deleteUser,
+  getUser,
+  updateUserRole,
 }
