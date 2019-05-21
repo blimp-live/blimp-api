@@ -13,6 +13,13 @@ const pool = new Pool({
 
 const moment = require('moment');
 
+function getUrlByName(name) {
+  url = name.replace(/[^a-zA-Z 0-9]+/g, ''); //remove special char
+  url = url.replace(/\s+/g, '-'); //replace space with hyphen
+  url = '/' + url.toLowerCase();
+  return url
+}
+
 const getDashboardByUrl = (request, response) => {
   const url = request.params.url
 
@@ -42,8 +49,9 @@ const getDashboardById = (request, response) => {
 // create dashboard, update permissions table
 const createDashboard = (request, response) => {
   const { name, userid } = request.body;
-  url = name.replace(/\s+/g, '-').toLowerCase();
- 
+
+  url = getUrlByName(name)
+
   pool.query('INSERT INTO dashboard (url, name, contents, public, last_saved, created_at) VALUES ($1, $2, $3, $4, $5, $6) RETURNING *', 
     [url, name, '{}', true, moment(Date.now()), moment(Date.now())], (error, results) => {
       if (error) throw error;
@@ -53,6 +61,20 @@ const createDashboard = (request, response) => {
         [userid, dashboardid, 'owner'], (error, results) => {
           if (error) throw error;
       })
+      response.status(200).json(results.rows);
+  })
+}
+
+//set dashboard
+const setDashboard = (request, response) => {
+  const dashboardid = parseInt(request.params.id)
+  const {name, contents} = request.body
+
+  url = getUrlByName(name)
+
+  pool.query('UPDATE dashboard SET (url, name, contents, last_saved) = ($1, $2, $3, $4) WHERE id = $5 RETURNING *', 
+    [url, name, contents, moment(Date.now()), dashboardid], (error, results) => {
+      if (error) throw error;
       response.status(200).json(results.rows);
   })
 }
@@ -97,9 +119,17 @@ const deleteUser = (request, response) => {
 
 // get user
 const getUser = (request, response) => {
+  pool.query('SELECT * FROM users', (error, results) => {
+    if (error) throw error;
+    response.status(200).json(results.rows);
+  })
+}
+
+// get user
+const getUserById = (request, response) => {
   const id = parseInt(request.params.id);
 
-  pool.query('SELECT * FROM users WHERE id = $1', [id], (error, results) => {
+  pool.query('SELECT * FROM users where id = $1', [id], (error, results) => {
     if (error) throw error;
     response.status(200).json(results.rows);
   })
@@ -118,5 +148,7 @@ module.exports = {
   createUser,
   deleteUser,
   getUser,
+  getUserById,
   updateUserRole,
+  setDashboard
 }
