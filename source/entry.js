@@ -44,7 +44,9 @@ app.post('/user', pg.createUser)
 app.delete('/user', pg.deleteUser)
 
 app.get('/user', pg.getUser)
+
 app.get('/user/:id', pg.getUserById)
+
 app.post('/user/role/:role', pg.updateUserRole)
 
 app.listen(port, () => console.log(`Blimp app listening on port ${port}!`))
