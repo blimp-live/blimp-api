@@ -1,6 +1,7 @@
 // Note: This is for local testing
 // Once deployed, we don't want this in
 // a public repo
+const whitelist = require('./whitelist');
 
 const { Pool } = require('pg');
 const pool = new Pool({
@@ -18,6 +19,7 @@ const getDashboardByUrl = (request, response) => {
 
   pool.query('SELECT * FROM dashboard WHERE url = $1', [url], (error, results) => {
     if (error) throw error;
+    response.header("Access-Control-Allow-Origin", whitelist.webDomain);
     response.status(200).json(results.rows)
   })
 }
@@ -25,6 +27,7 @@ const getDashboardByUrl = (request, response) => {
 const getDashboards = (request, response) => {
   pool.query('SELECT * FROM pg_catalog.pg_tables;', (error, results) => {
     if (error) throw error;
+    response.header("Access-Control-Allow-Origin", whitelist.webDomain);
     response.status(200).json(results.rows)
   })
 }
@@ -35,6 +38,7 @@ const getDashboardById = (request, response) => {
 
   pool.query('SELECT * FROM dashboard WHERE id = $1', [id], (error, results) => {
     if (error) throw error;
+    response.header("Access-Control-Allow-Origin", whitelist.webDomain);
     response.status(200).json(results.rows);
   })
 }
@@ -53,6 +57,7 @@ const createDashboard = (request, response) => {
         [userid, dashboardid, 'owner'], (error, results) => {
           if (error) throw error;
       })
+      response.header("Access-Control-Allow-Origin", whitelist.webDomain);
       response.status(200).json(results.rows);
   })
 }
@@ -67,6 +72,7 @@ const deleteDashboard = (request, response) => {
     pool.query('DELETE FROM permissions WHERE dashboard_id = $1', [dashboardid], (error, results) => {
       if (error) throw error;
     })
+    response.header("Access-Control-Allow-Origin", whitelist.webDomain);
     response.status(200).json(results.rows);
   })
 }
@@ -78,6 +84,7 @@ const createUser = (request, response) => {
   pool.query('INSERT INTO users (email, img_url, name, password) VALUES ($1, $2, $3, $4) RETURNING *', 
     [email, '', name, password], (error, results) => {
       if (error) throw error;
+      response.header("Access-Control-Allow-Origin", whitelist.webDomain);
       response.status(200).json(results.rows);
   })
 }
@@ -91,6 +98,7 @@ const deleteUser = (request, response) => {
     pool.query('DELETE FROM permissions WHERE user_id = $1', [userid], (error, results) => {
       if (error) throw error;
     })
+    response.header("Access-Control-Allow-Origin", whitelist.webDomain);
     response.status(200).json(results.rows);
   })
 }
@@ -101,6 +109,7 @@ const getUser = (request, response) => {
 
   pool.query('SELECT * FROM users WHERE id = $1', [id], (error, results) => {
     if (error) throw error;
+    response.header("Access-Control-Allow-Origin", whitelist.webDomain);
     response.status(200).json(results.rows);
   })
 }
