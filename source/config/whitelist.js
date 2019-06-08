@@ -1,5 +1,5 @@
-const webDomain = "localhost:3000";
+const webDomain = "http://localhost:3000";
 
-module.exports = { 
+module.exports = {
   webDomain
 }
