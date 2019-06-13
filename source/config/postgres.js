@@ -69,7 +69,6 @@ const setDashboard = (request, response) => {
   const {name, contents} = request.body
 
   url = getUrlByName(name)
-  console.log(url)
 
   pool.query('UPDATE dashboard SET (url, name, contents, last_saved) = ($1, $2, $3, $4) WHERE id = $5 RETURNING *',
     [url, name, '{}', moment(Date.now()), dashboardid], (error, results) => {
