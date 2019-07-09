@@ -1,6 +1,7 @@
 const express = require('express')
 const bodyParser = require('body-parser')
 const pg = require('./config/postgres')
+const whitelist = require('./config/whitelist');
 const app = express()
 const port = 8000
 
@@ -10,6 +11,12 @@ app.use(
     extended: true,
   })
 )
+app.use(function(req, res, next) {
+  res.header("Access-Control-Allow-Origin", whitelist.webDomain);
+  res.header("Access-Control-Allow-Headers", "Origin, X-Requested-With, Content-Type, Accept");
+  res.header('Access-Control-Allow-Methods', 'PUT, POST, GET, DELETE, OPTIONS');
+  next();
+});
 
 app.get('/', function (req, res) {
   res.send('Home Page')
@@ -50,7 +57,3 @@ app.get('/user/:id', pg.getUserById)
 app.post('/user/role/:role', pg.updateUserRole)
 
 app.listen(port, () => console.log(`Blimp app listening on port ${port}!`))
-
-
-
-
