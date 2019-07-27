@@ -1,5 +1,7 @@
-const webDomain = "http://localhost:3000";
+const local = "http://localhost:3000";
+const prod = "https://blimp.live/"; 
 
 module.exports = {
-  webDomain
+  local,
+  prod
 }
