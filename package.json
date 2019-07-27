@@ -3,12 +3,16 @@
   "version": "1.0.0",
   "description": "An interactive dashboard service. ",
   "main": "entry.js",
+  "engines": {
+    "node": "10.x"
+  },
   "dependencies": {
     "express": "^4.16.4",
     "moment": "^2.24.0",
     "opener": "^1.5.1",
     "pg": "^7.10.0",
-    "pgbouncer": "^1.0.1"
+    "pgbouncer": "^1.0.1",
+    "v8": "^0.1.0"
   },
   "devDependencies": {
     "chai": "^4.2.0",
