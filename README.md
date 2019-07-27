@@ -1,7 +1,7 @@
 # blimp API
 
 node Version: v10.15.3
-npm Verison: v6.4.1
+npm Version: v6.4.1
 
 Blimp API/Backend
 
