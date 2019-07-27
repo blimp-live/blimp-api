@@ -3,7 +3,7 @@ const bodyParser = require('body-parser')
 const pg = require('./config/postgres')
 const whitelist = require('./config/whitelist');
 const app = express()
-const port = 8000
+const PORT = process.env.PORT || 3000;
 
 app.use(bodyParser.json())
 app.use(
@@ -56,4 +56,4 @@ app.get('/user/:id', pg.getUserById)
 
 app.post('/user/role/:role', pg.updateUserRole)
 
-app.listen(port, () => console.log(`Blimp app listening on port ${port}!`))
+app.listen(PORT, () => console.log(`Blimp app listening on port ${port}!`))
