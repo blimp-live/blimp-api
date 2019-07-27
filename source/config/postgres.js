@@ -1,14 +1,22 @@
-// Note: This is for local testing
-// Once deployed, we don't want this in
-// a public repo
+
 const { Pool } = require('pg');
+
 const pool = new Pool({
-  user: 'me',
-  host: 'localhost',
-  database: 'blimp',
-  password: 'password',
-  port: 5432,
-})
+  connectionString: process.env.DATABASE_URL,
+  ssl: true,
+});
+
+// // Note: This is for local testing
+// // Once deployed, we don't want this in
+// // a public repo
+// const { Pool } = require('pg');
+// const pool = new Pool({
+//   user: 'me',
+//   host: 'localhost',
+//   database: 'blimp',
+//   password: 'password',
+//   port: 5432,
+// })
 
 const moment = require('moment');
 
