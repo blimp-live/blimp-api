@@ -88,3 +88,10 @@ Test Coverage Report:
 ```
 npm run cov
 ```
+
+### How to Deploy
+```
+heroku login
+git push heroku master
+heroku open
+```

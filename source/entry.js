@@ -3,7 +3,7 @@ const bodyParser = require('body-parser')
 const pg = require('./config/postgres')
 const whitelist = require('./config/whitelist');
 const app = express()
-const port = 8000
+const port = process.env.PORT || 8000;
 
 app.use(bodyParser.json())
 app.use(
@@ -12,6 +12,7 @@ app.use(
   })
 )
 app.use(function(req, res, next) {
+  res.header("Access-Control-Allow-Origin", whitelist.netlify);
   res.header("Access-Control-Allow-Origin", whitelist.prod);
   res.header("Access-Control-Allow-Headers", "Origin, X-Requested-With, Content-Type, Accept");
   res.header('Access-Control-Allow-Methods', 'PUT, POST, GET, DELETE, OPTIONS');
