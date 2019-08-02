@@ -90,8 +90,11 @@ npm run cov
 ```
 
 ### How to Deploy
+
 ```
 heroku login
+# Only run one below if first time deploying
+heroku git:remote -a http://blimp-live
 git push heroku master
 heroku open
 ```
